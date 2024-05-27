@@ -1,0 +1,84 @@
+body {
+  background-image: linear-gradient(#ff6b6b, #ff73fa, #2e1a47);
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: white;
+  font-family: "Neon 80s", sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  gap: 5px;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  background-color: #2b2b2b;
+  border: 1px solid #ff6b6b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Press Start 2P", cursive;
+  font-size: 20px;
+  color: #00ffff;
+  cursor: pointer;
+}
+.cellMine {
+  width: 40px;
+  height: 40px;
+  background-color: #2b2b2b;
+  border: 1px solid #ff6b6b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Press Start 2P", cursive;
+  font-size: 20px;
+  color: #000000;
+  cursor: pointer;
+}
+.mine {
+  width: 40px;
+  height: 40px;
+  background-color: #ff0000;
+  border: 1px solid #ff6b6b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Press Start 2P", cursive;
+  font-size: 20px;
+  color: #000000;
+}
+
+.freeCell {
+  width: 40px;
+  height: 40px;
+  background-color: #44ff00;
+  border: 1px solid #ff6b6b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Press Start 2P", cursive;
+  font-size: 20px;
+  color: #000000;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.info > button {
+  height: 30px;
+  width: 30px;
+}
