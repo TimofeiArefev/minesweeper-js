@@ -1,6 +1,7 @@
 const xSize = 10;
 const ySize = 10;
 
+const a = 10;
 const isBorderCell = (cellNumber) => {
   return cellNumber % xSize == 0 || cellNumber % xSize == xSize - 1;
 };
@@ -32,7 +33,7 @@ const isInvalidCell = (currentNumber, cellId) => {
   return false;
 };
 
-function countSurrounding(elements, currentNumber) {
+const countSurrounding = (elements, currentNumber) => {
   let minesAmount = 0;
 
   for (let y = -1; y <= 1; y++) {
@@ -54,7 +55,7 @@ function countSurrounding(elements, currentNumber) {
     }
   }
   return minesAmount;
-}
+};
 const isOpen = (elements, currentNumber) => {
   return (
     elements[currentNumber].classList.contains("freeCell") ||
@@ -138,15 +139,47 @@ const updateCellOnMap = (currentDiv) => {
   setMinesAmountInsideDiv(currentDiv, minesAmount);
 };
 
+const endGame = (isSuccess) => {
+  document.getElementById("gameState").innerText = isSuccess
+    ? "The game has ended successfuly"
+    : "Meh Try again";
+
+  document
+    .querySelectorAll(".cell")
+    .forEach((currentDiv) =>
+      currentDiv.removeEventListener("click", handleClick),
+    );
+  document
+    .querySelectorAll(".cellMine")
+    .forEach((currentDiv) =>
+      currentDiv.removeEventListener("click", handleClickMine),
+    );
+  document.getElementById("isMineClick").removeEventListener("click", endGame);
+};
+
 const isGameEnded = () => {
   if (countMinesOnMap() == 0) {
-    document.getElementById("gameState").innerText = "The game has ended";
+    endGame(true);
   }
+};
+
+let isMineClick = false;
+document.getElementById("isMineClick").checked = false;
+document.getElementById("isMineClick").onclick = () => {
+  isMineClick = !isMineClick;
+  console.log("I was here ");
 };
 
 const handleClick = (event) => {
   const currentDiv = event.target;
-  currentDiv.classList.replace("cell", "freeCell");
+
+  if (isMineClick) {
+    currentDiv.classList.replace("cell", "freeCell");
+    endGame(false);
+  } else {
+    currentDiv.classList.replace("cell", "freeCell");
+  }
+
   updateCellOnMap(currentDiv);
   currentDiv.removeEventListener("click", handleClick);
   countMinesOnMap();
@@ -157,11 +190,15 @@ const handleClick = (event) => {
 
 const handleClickMine = (event) => {
   const currentDiv = event.target;
-  if (clickAmount === 0) {
-    currentDiv.classList.replace("cellMine", "freeCell");
-    updateCellOnMap(currentDiv);
+  if (isMineClick) {
+    currentDiv.classList.replace("cellMine", "possibleMine");
   } else {
-    currentDiv.classList.replace("cellMine", "mine");
+    if (clickAmount === 0) {
+      currentDiv.classList.replace("cellMine", "freeCell");
+    } else {
+      currentDiv.classList.replace("cellMine", "mine");
+      endGame(false);
+    }
   }
   clickAmount++;
   currentDiv.removeEventListener("click", handleClickMine);
@@ -175,7 +212,7 @@ const grid = document.querySelector(".grid-container");
 for (let i = 0; i < ySize * xSize; i++) {
   const cell = document.createElement("div");
   cell.classList.add("element", i);
-  const isMineTrigger = Math.floor(Math.random() * 10) == 4;
+  const isMineTrigger = Math.floor(Math.random() * 5) == 4;
   if (isMineTrigger) {
     cell.classList.add("cellMine");
     cell.addEventListener("click", handleClickMine);

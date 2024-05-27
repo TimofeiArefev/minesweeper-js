@@ -21,10 +21,10 @@ main {
   gap: 5px;
 }
 
-.cell {
-  width: 40px;
+.element{
+
+  width: 40px; 
   height: 40px;
-  background-color: #2b2b2b;
   border: 1px solid #ff6b6b;
   display: flex;
   justify-content: center;
@@ -34,42 +34,25 @@ main {
   color: #00ffff;
   cursor: pointer;
 }
-.cellMine {
-  width: 40px;
-  height: 40px;
+
+.cell {
   background-color: #2b2b2b;
-  border: 1px solid #ff6b6b;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Press Start 2P", cursive;
-  font-size: 20px;
+  cursor: pointer;
+}
+.cellMine {
+  background-color: #2b2b2b;
   color: #000000;
   cursor: pointer;
 }
 .mine {
-  width: 40px;
-  height: 40px;
   background-color: #ff0000;
-  border: 1px solid #ff6b6b;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Press Start 2P", cursive;
-  font-size: 20px;
   color: #000000;
 }
-
+.passbleMine{
+  background-color: #A020F0;
+}
 .freeCell {
-  width: 40px;
-  height: 40px;
   background-color: #44ff00;
-  border: 1px solid #ff6b6b;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Press Start 2P", cursive;
-  font-size: 20px;
   color: #000000;
 }
 
