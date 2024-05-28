@@ -1,7 +1,32 @@
 const xSize = 10;
 const ySize = 10;
 
-const a = 10;
+const MINE_PROBABILITY = 0.1;
+
+let clickAmount = 0;
+let isMineClick = false;
+
+const init = () => {
+  const grid = document.querySelector(".grid-container");
+
+  for (let i = 0; i < ySize * xSize; i++) {
+    const cell = document.createElement("div");
+    cell.classList.add("element", i);
+    const isMineTrigger = Math.random() < MINE_PROBABILITY;
+    if (isMineTrigger) {
+      cell.classList.add("cellMine");
+      cell.addEventListener("click", handleClickMine);
+    } else {
+      cell.classList.add("cell");
+      cell.addEventListener("click", handleClick);
+    }
+
+    grid.appendChild(cell);
+  }
+
+  updateMinesAmount();
+};
+
 const isBorderCell = (cellNumber) => {
   return cellNumber % xSize == 0 || cellNumber % xSize == xSize - 1;
 };
@@ -108,7 +133,8 @@ const openAllEmptyCells = (elements, currentNumber) => {
   if (minesAmount != 0) {
     return;
   }
-
+  console.log(elements[currentNumber]);
+  elements[currentNumber].innerText = " ";
   for (let y = -1; y <= 1; y++) {
     for (let x = -1; x <= 1; x++) {
       if (x === 0 && y === 0) {
@@ -134,6 +160,8 @@ const updateCellOnMap = (currentDiv) => {
   const minesAmount = countSurrounding(elements, currentNumber);
 
   if (minesAmount == 0) {
+    // currentDiv.innerText = " ";
+    console.log("aa");
     openAllEmptyCells(elements, currentNumber);
   }
   setMinesAmountInsideDiv(currentDiv, minesAmount);
@@ -163,7 +191,6 @@ const isGameEnded = () => {
   }
 };
 
-let isMineClick = false;
 document.getElementById("isMineClick").checked = false;
 document.getElementById("isMineClick").onclick = () => {
   isMineClick = !isMineClick;
@@ -190,38 +217,29 @@ const handleClick = (event) => {
 
 const handleClickMine = (event) => {
   const currentDiv = event.target;
+
+  // Determine the new class based on the conditions
+  let newClass;
   if (isMineClick) {
-    currentDiv.classList.replace("cellMine", "possibleMine");
+    newClass = "possibleMine";
   } else {
     if (clickAmount === 0) {
-      currentDiv.classList.replace("cellMine", "freeCell");
+      newClass = "freeCell";
     } else {
-      currentDiv.classList.replace("cellMine", "mine");
+      newClass = "mine";
       endGame(false);
     }
   }
+
+  // Replace the class only if necessary
+  if (newClass !== currentDiv.className) {
+    currentDiv.classList.replace("cellMine", newClass);
+  }
+
   clickAmount++;
   currentDiv.removeEventListener("click", handleClickMine);
   updateMinesAmount();
   isGameEnded();
 };
 
-let clickAmount = 0;
-const grid = document.querySelector(".grid-container");
-
-for (let i = 0; i < ySize * xSize; i++) {
-  const cell = document.createElement("div");
-  cell.classList.add("element", i);
-  const isMineTrigger = Math.floor(Math.random() * 5) == 4;
-  if (isMineTrigger) {
-    cell.classList.add("cellMine");
-    cell.addEventListener("click", handleClickMine);
-  } else {
-    cell.classList.add("cell");
-    cell.addEventListener("click", handleClick);
-  }
-
-  grid.appendChild(cell);
-}
-
-updateMinesAmount();
+init();

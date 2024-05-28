@@ -14,14 +14,13 @@
     <h1>Minesweeper</h1>
   </head>
   <main>
-    <form>
-      <label for="isMineClick">Mine marker:</label>
-      <input type="checkbox" id="isMineClick" name="isMineClick" value="isMineClick" onclick="isMineClick()" />
-    </form>
     <div class="info">
       <h2>Mines amount: <span id="minesAmount"></span></h2>
-      <button>a</button>
-      <button>b</button>
+
+      <form>
+        <label for="isMineClick">Mine marker:</label>
+        <input type="checkbox" id="isMineClick" name="isMineClick" value="isMineClick" onclick="isMineClick()" />
+      </form>
     </div>
     <div class="grid-container">
       <script src="minesweeper.js"></script>
