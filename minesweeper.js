@@ -70,12 +70,7 @@ const countSurrounding = (elements, currentNumber) => {
         !isInvalidCell(currentNumber, cellId)
       ) {
         let currentElement = elements[Number(currentNumber) + x + y * 10];
-        if (
-          currentElement.classList[2] == "cellMine" ||
-          currentElement.classList[2] == "mine"
-        ) {
-          minesAmount++;
-        }
+        minesAmount += isMineElemnt(currentElement) ? 1 : 0;
       }
     }
   }
@@ -104,11 +99,19 @@ const openCell = (currentElement, minesAmount) => {
   currentElement.removeEventListener("click", handleClick);
 };
 
+const isMineElemnt = (element) => {
+  return (
+    element.classList.contains("cellMine") ||
+    element.classList.contains("mine") ||
+    element.classList.contains("possibleMine")
+  );
+};
+
 const countMinesOnMap = () => {
   const elements = document.querySelectorAll(".element");
   let minesAmount = 0;
   for (let i = 0; i < xSize * ySize; i++) {
-    minesAmount += elements[i].classList.contains("cellMine") ? 1 : 0;
+    minesAmount += isMineElemnt(elements[i]) ? 1 : 0;
   }
   console.log(minesAmount);
   return minesAmount;
@@ -155,16 +158,18 @@ const openAllEmptyCells = (elements, currentNumber) => {
 };
 
 const updateCellOnMap = (currentDiv) => {
+  if (isMineClick) {
+    return;
+  }
   const elements = document.querySelectorAll(".element");
   const currentNumber = currentDiv.classList[1];
   const minesAmount = countSurrounding(elements, currentNumber);
 
   if (minesAmount == 0) {
-    // currentDiv.innerText = " ";
-    console.log("aa");
     openAllEmptyCells(elements, currentNumber);
+  } else {
+    setMinesAmountInsideDiv(currentDiv, minesAmount);
   }
-  setMinesAmountInsideDiv(currentDiv, minesAmount);
 };
 
 const endGame = (isSuccess) => {
@@ -234,6 +239,7 @@ const handleClickMine = (event) => {
   // Replace the class only if necessary
   if (newClass !== currentDiv.className) {
     currentDiv.classList.replace("cellMine", newClass);
+    updateCellOnMap(currentDiv);
   }
 
   clickAmount++;
